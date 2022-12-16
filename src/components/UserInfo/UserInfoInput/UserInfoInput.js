@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
+import ReactDOM from "react-dom";
 import Button from "../../UI/Button/Button";
 import Card from "../../UI/Button/Card";
 import ErrorModal from "../../UI/Button/ErrorModal";
 import "./UserInfoInput.css";
 
 const UserInfoInput = (props) => {
-  const [enteredUserName, setEnteredUserName] = useState("");
-  const [enteredUserAge, setEnteredUserAge] = useState("");
+  // const [enteredUserName, setEnteredUserName] = useState("");
+  // const [enteredUserAge, setEnteredUserAge] = useState("");
   const [error, setError] = useState({});
-  const addUserNameHandler = (evt) => {
-    setEnteredUserName((prevName) => evt.target.value);
-  };
-  const addUserAgeHandler = (evt) => {
-    setEnteredUserAge((prevAge) => evt.target.value);
-  };
+
+  const enteredName = useRef();
+  const enteredAge = useRef();
+
+  // const addUserNameHandler = (evt) => {
+  //   setEnteredUserName((prevName) => evt.target.value);
+  // };
+  // const addUserAgeHandler = (evt) => {
+  //   setEnteredUserAge((prevAge) => evt.target.value);
+  // };
   const addEnteredUserInfo = (evt) => {
+    const enteredUserName = enteredName.current.value;
+    const enteredUserAge = enteredAge.current.value;
     evt.preventDefault();
     // When name or age value is empty
     if (enteredUserName.trim().length === 0 || !enteredUserAge) {
@@ -29,23 +36,27 @@ const UserInfoInput = (props) => {
         title: "Invalid Input",
         message: "Please enter a valid age (> 0).",
       });
-      setEnteredUserAge("");
       return;
     }
 
     props.onAddEnteredUser(enteredUserName, enteredUserAge);
-    setEnteredUserAge("");
-    setEnteredUserName("");
+    enteredName.current.value = "";
+    enteredAge.current.value = "";
+    // setEnteredUserAge("");
+    // setEnteredUserName("");
   };
+  console.log(enteredName.current);
   // Removing error modal
   const errorModalHandler = () => {
     setError({});
   };
   return (
-    <section>
-      {Object.keys(error).length > 0 && (
-        <ErrorModal error={error} onErrorHandler={errorModalHandler} />
-      )}
+    <Fragment>
+      {Object.keys(error).length > 0 &&
+        ReactDOM.createPortal(
+          <ErrorModal error={error} onErrorHandler={errorModalHandler} />,
+          document.getElementById("overlay-root")
+        )}
       <Card>
         <form className="form" onSubmit={addEnteredUserInfo}>
           <div className="form-control">
@@ -53,8 +64,9 @@ const UserInfoInput = (props) => {
             <input
               id="username"
               type="text"
-              onChange={addUserNameHandler}
-              value={enteredUserName}
+              // onChange={addUserNameHandler}
+              ref={enteredName}
+              // value={enteredUserName}
             ></input>
             <label htmlFor="user-age">Age (Years)</label>
             <input
@@ -62,14 +74,15 @@ const UserInfoInput = (props) => {
               type="number"
               max="150"
               step="1"
-              onChange={addUserAgeHandler}
-              value={enteredUserAge}
+              // onChange={addUserAgeHandler}
+              ref={enteredAge}
+              // value={enteredUserAge}
             ></input>
           </div>
           <Button type="submit">Add User</Button>
         </form>
       </Card>
-    </section>
+    </Fragment>
   );
 };
 

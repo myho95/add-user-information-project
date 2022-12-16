@@ -3,10 +3,7 @@ import "./UserInfoItem.css";
 
 const UserInfoItem = (props) => {
   return (
-    <li
-      className="user-item"
-      key={props.userItem.id}
-    >{`${props.userItem.name} (${props.userItem.age} years old)`}</li>
+    <li className="user-item">{`${props.userItem.name} (${props.userItem.age} years old)`}</li>
   );
 };
 

@@ -5,7 +5,7 @@ import classes from "./ErrorModal.module.css";
 
 const ErrorModal = (props) => {
   return (
-    <div className={classes["error-modal-container"]}>
+    <React.Fragment>
       <div className={classes.backdrop} onClick={props.onErrorHandler}></div>
       <Card className={classes["error-modal"]}>
         <header>
@@ -22,7 +22,7 @@ const ErrorModal = (props) => {
           </Button>
         </footer>
       </Card>
-    </div>
+    </React.Fragment>
   );
 };
 

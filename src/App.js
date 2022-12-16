@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import "./App.css";
 import UserInfoInput from "./components/UserInfo/UserInfoInput/UserInfoInput";
 import UserInfoList from "./components/UserInfo/UserInfoList/UserInfoList";
@@ -14,10 +14,10 @@ function App() {
     });
   };
   return (
-    <div className="user-info-app">
+    <Fragment>
       <UserInfoInput onAddEnteredUser={addEnteredUser} />
       <UserInfoList usersList={userInfoList} />
-    </div>
+    </Fragment>
   );
 }
 
